@@ -1,0 +1,66 @@
+# depslib dependency file v1.0
+1698144863 source:c:\users\cse\desktop\210041226\lab9\main.cpp
+	<iostream>
+	"TwoDimensionalShape.h"
+	"Square.h"
+	"Rectangle.h"
+	"Hexagon.h"
+	"Triangle.h"
+
+1698139885 h"
+
+1698140965 source:c:\users\cse\desktop\210041226\lab9\src\hexagon.cpp
+	"Hexagon.h"
+
+1698140965 "
+
+1698144075 c:\users\cse\desktop\210041226\lab9\include\hexagon.h
+	"TwoDimensionalShape.h"
+	<iostream>
+
+1698144953 
+
+1698144073 c:\users\cse\desktop\210041226\lab9\twodimensionalshape.h
+	<iostream>
+	<cmath>
+
+1698139139 source:c:\users\cse\desktop\210041226\lab9\twodimensionalshape.cpp
+	"TwoDimensionalShape.h"
+
+1698144727 ionalShape.h"
+
+1698139220 source:c:\users\cse\desktop\210041226\lab9\src\square.cpp
+	"Square.h"
+
+1698144771 c:\users\cse\desktop\210041226\lab9\include\square.h
+	"TwoDimensionalShape.h"
+	<iostream>
+
+1698139790 source:c:\users\cse\desktop\210041226\lab9\src\rectangle.cpp
+	"Rectangle.h"
+
+1698139790 .h"
+
+1698144953 c:\users\cse\desktop\210041226\lab9\include\rectangle.h
+	"TwoDimensionalShape.h"
+	<iostream>
+
+1698139885 source:c:\users\cse\desktop\210041226\lab9\src\triangle.cpp
+	"Triangle.h"
+
+1698144727 c:\users\cse\desktop\210041226\lab9\include\triangle.h
+	<iostream>
+	"TwoDimensionalShape.h"
+
+1698144863 source:/mnt/Games/OOP/Lab_9/Lab9/main.cpp
+	<iostream>
+	"TwoDimensionalShape.h"
+	"Square.h"
+	"Rectangle.h"
+	"Hexagon.h"
+	"Triangle.h"
+
+1698144073 /mnt/Games/OOP/Lab_9/Lab9/TwoDimensionalShape.h
+	<iostream>
+	<cmath>
+

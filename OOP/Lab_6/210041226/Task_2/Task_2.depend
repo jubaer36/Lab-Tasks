@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1694512996 source:c:\users\cse\desktop\210041226\task_2\main.cpp
+	<iostream>
+	<string>
+	<Medicine.h>
+
+1694513015 c:\users\cse\desktop\210041226\task_2\include\medicine.h
+	<iostream>
+	<string>
+
+1694513132 source:c:\users\cse\desktop\210041226\task_2\src\medicine.cpp
+	"Medicine.h"
+	<iostream>
+	<string>
+

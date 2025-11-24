@@ -1,0 +1,103 @@
+// 
+import java.sql.*;
+
+
+/**
+ * App
+ */
+class App {
+    public static void main(String[] args) {
+        int TotalCount , CIPCount , VIPCount , OPCount , UncategorizedCount;
+        String TotalQuery = "select count(*) from account";
+        String CIPQuery = "select count(*) FROM ACCOUNT WHERE A_ID IN (SELECT A_ID FROM TRANSACTIONS GROUP BY A_ID HAVING SUM(CASE WHEN TYPE = '0' THEN AMOUNT ELSE -AMOUNT END)> 1000000 and SUM(AMOUNT)>5000000)";
+        String VIPQuery = "select count(*) FROM ACCOUNT WHERE A_ID IN (SELECT A_ID FROM TRANSACTIONS GROUP BY A_ID HAVING SUM(CASE WHEN TYPE = '0' THEN AMOUNT ELSE -AMOUNT END) > 500000 AND SUM(CASE WHEN TYPE = '0' THEN AMOUNT ELSE -AMOUNT END) < 900000 and SUM(AMOUNT)>2500000 and SUM(AMOUNT)>4500000)";
+        String OPQuery = "select count(*) FROM ACCOUNT WHERE A_ID IN (SELECT A_ID FROM TRANSACTIONS GROUP BY A_ID HAVING SUM(CASE WHEN TYPE = '0' THEN AMOUNT ELSE -AMOUNT END) < 100000 and SUM(AMOUNT)<1000000)";
+        try {
+            // Task 1
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "a", "a");
+            System.out.println("Connection to database successful ");
+            
+
+            Statement statement1 = con.createStatement();
+            ResultSet result = statement1.executeQuery(TotalQuery);
+            if(result.next()){
+                TotalCount = result.getInt(1);
+            }
+            else{
+                TotalCount= 0 ;
+            }
+            
+            result = statement1.executeQuery(CIPQuery);
+            if(result.next()){
+                CIPCount = result.getInt(1);
+            }
+            else{
+                CIPCount = 0 ;
+            }
+            result = statement1.executeQuery(VIPQuery);
+            if(result.next()){
+                VIPCount = result.getInt(1);
+            }
+            else{
+                VIPCount = 0 ;
+            }
+            result = statement1.executeQuery(OPQuery);
+            if(result.next()){
+                OPCount = result.getInt(1);
+            }
+            else{
+                OPCount = 0 ;
+            }
+            UncategorizedCount = TotalCount - (CIPCount + VIPCount + OPCount);
+            System.out.println("Total Number of Accounts : " + TotalCount);
+            System.out.println("CIP count : " + CIPCount);
+            System.out.println("VIP count : " + OPCount);
+            System.out.println("Ordinary count : " + VIPCount);
+            System.out.println("Uncategorized : " + UncategorizedCount );
+
+
+            // Task 2
+
+            PreparedStatement pStmt = con.prepareStatement ("insert into instructor values (? ,? ,? ,?)") ;
+            pStmt.setInt(1 ,10001);
+            pStmt.setString (2 ,"2022-02-12");
+            pStmt.setInt (3 ,2);
+            pStmt.setInt (4 ,5000);
+            pStmt.setInt (5 ,1);
+            pStmt.executeUpdate();
+            PreparedStatement pStmt2 = con.prepareStatement("insert into transactions values (?,to_date(?, 'YYYY-MM-DD'),?,?,?)");
+            pStmt2.setInt(1 ,10005);
+            pStmt2.setString (2 ,"2022-10-15");
+            pStmt2.setInt (3 ,4);
+            pStmt2.setInt (4 ,10000);
+            pStmt2.setInt (5 ,0);
+            pStmt2.executeUpdate();
+
+            String AQuery = "select * from ACCOUNT";
+            String TQuery = "select * from TRANSACTIONS";
+            ResultSet resultAccount = statement1.executeQuery(AQuery);
+            ResultSet resultTransactions = statement1.executeQuery(TQuery);
+            ResultSetMetaData rsmd1 = resultAccount.getMetaData();
+            ResultSetMetaData rsmd2 = resultTransactions.getMetaData();
+            System.out.println("Account Table");
+            System.out.println("Column Number: "+rsmd1.getColumnCount());
+            for (int i = 1; i <= rsmd1.getColumnCount(); i++) {
+                System.out.printf("Column Name: \""+ rsmd1.getColumnName(i)+ "\"");
+                System.out.println(" Data type: "+rsmd1.getColumnTypeName(i));
+            }
+            System.out.println("Transactions Table");
+            System.out.println("Column Number: "+rsmd2.getColumnCount());
+            for (int i = 1; i <= rsmd2.getColumnCount(); i++) {
+                System.out.printf("Column Name: \""+ rsmd2.getColumnName(i)+ "\"");
+                System.out.println(" Data type: "+rsmd2.getColumnTypeName(i));
+            }
+            con.close();
+
+
+        } catch(Exception e){
+            System.out.println(e);
+        }                                              
+    }
+    
+}

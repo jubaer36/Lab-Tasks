@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>custom</class>
+ <widget class="QDialog" name="custom">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+
+ background: rgb(16, 16, 16); 
+}
+</string>
+  </property>
+  <widget class="QSpinBox" name="pomodoro_spinBox">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>50</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QSpinBox {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="short_break_spinBox">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>90</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QSpinBox {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>60</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+
+	color:white;    
+ 
+    background: rgb(16, 16, 16);
+
+	border: 1px solid green;
+   
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Pomodoro</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>100</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+
+	color:white;    
+ 
+    background: rgb(16, 16, 16);
+
+	border: 1px solid green;
+   
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Short Break</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="save_button">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>220</y>
+     <width>89</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="lbreak_spinBox">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>130</y>
+     <width>71</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QSpinBox {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>140</y>
+     <width>91</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+
+	color:white;    
+ 
+    background: rgb(16, 16, 16);
+
+	border: 1px solid green;
+   
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Long Break</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="alarm_button">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>220</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>Alarm Sound</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>60</y>
+     <width>86</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+QComboBox {
+
+	color:white;    
+ 
+    background: rgb(16, 16, 16);
+
+	border: 1px solid green;
+   
+}
+
+
+
+
+
+QComboBox QAbstractItemView {
+    background-color: black;
+    color: white;
+}
+
+</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

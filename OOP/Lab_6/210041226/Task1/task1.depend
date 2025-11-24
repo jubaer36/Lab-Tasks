@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1694512581 source:/mnt/Games/OOP/Lab_6/210041226/Task1/main.cpp
+	<iostream>
+	<string>
+	<student.h>
+
+1694510854 /mnt/Games/OOP/Lab_6/210041226/Task1/include/student.h
+	<string>
+	<iostream>
+
+1694510850 source:/mnt/Games/OOP/Lab_6/210041226/Task1/src/student.cpp
+	"student.h"
+	<string>
+	<iostream>
+

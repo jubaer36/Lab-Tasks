@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskManager</class>
+ <widget class="QWidget" name="TaskManager">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>475</width>
+    <height>638</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Task Manager</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { 
+ 
+    background: rgb(16, 16, 16);
+}</string>
+  </property>
+  <widget class="QCalendarWidget" name="calendarWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>451</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QCalendarWidget QToolButton{
+color:white;
+background-color:black;
+}
+
+QCalendarWidget QWidget{
+color:white;
+alternate-background-color:black;
+}
+
+ QCalendarWidget QAbstractItemView:enabled 
+  {
+  	
+  	color: rgb(180, 180, 180);  
+  	background-color: black;  
+  	selection-background-color: rgb(64, 64, 64); 
+  	selection-color: rgb(0, 255, 0); 
+  }</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>540</y>
+     <width>67</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel { 
+	color : white;
+ 
+    background: rgb(16, 16, 16);
+}</string>
+   </property>
+   <property name="text">
+    <string>Interval</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>430</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel { 
+	color : white;
+ 
+    background: rgb(16, 16, 16);
+}</string>
+   </property>
+   <property name="text">
+    <string>End Date</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addPushButton">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>590</y>
+     <width>161</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="taskListWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>330</y>
+     <width>341</width>
+     <height>261</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QListWidget {color:white;    
+ 
+    background: rgb(16, 16, 16);
+border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="intervalSpinBox">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>540</y>
+     <width>41</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QSpinBox{ 
+	color : white;
+ 
+    background: rgb(16, 16, 16);
+border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="endDateSelect">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>470</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QDateEdit { 
+	color: white;
+ 
+    background: rgb(16, 16, 16);
+border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="routinePushButton">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>360</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Routine</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>300</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+
+	color:white;    
+ 
+    background: rgb(16, 16, 16);
+
+	border: 1px solid green;
+   
+}
+</string>
+   </property>
+  </widget>
+  <widget class="QTimeEdit" name="timeSelect">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>300</y>
+     <width>118</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTimeEdit{ 
+ color:white ;
+ 
+    background: rgb(16, 16, 16);
+	border: 1px solid green;
+}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="removePushButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>590</y>
+     <width>181</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushSaveAsRoutineButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>590</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Save As Routine</string>
+   </property>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>calendarWidget</tabstop>
+  <tabstop>addPushButton</tabstop>
+  <tabstop>taskListWidget</tabstop>
+  <tabstop>intervalSpinBox</tabstop>
+  <tabstop>endDateSelect</tabstop>
+  <tabstop>routinePushButton</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>timeSelect</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

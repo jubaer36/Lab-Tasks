@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProgressBar</class>
+ <widget class="QDialog" name="ProgressBar">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1031</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialof { 
+  background: rgb(16, 16, 16);
+}</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1031</width>
+     <height>531</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalFrame"/>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

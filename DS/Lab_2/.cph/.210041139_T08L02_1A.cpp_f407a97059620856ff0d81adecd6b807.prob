@@ -1,0 +1,1 @@
+{"name":"Local: 210041139_T08L02_1A","url":"/mnt/Games/DS/Lab_2/210041139_T08L02_1A.cpp","tests":[{"id":1700248472507,"input":"10 6\nAACATGAAGG\nTTTTGGCCAA\nTTTGGCCAAA\nGATCAGATTT\nCCCGGGGGGA\nATCGATGCAT","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/mnt/Games/DS/Lab_2/210041139_T08L02_1A.cpp","group":"local","local":true}

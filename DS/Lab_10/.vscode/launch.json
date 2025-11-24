@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch (MinGW)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}/bin/${fileBasenameNoExtension}", // Adjust the program path to the bin folder
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false, // Use an external console for MinGW
+            "MIMode": "gdb", // Use GDB for debugging
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: g++ build active file" // Use the correct task label
+        }
+    ]
+}

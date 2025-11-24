@@ -1,0 +1,1 @@
+{"name":"Local: 210041226_T02_L06_2B","url":"/mnt/Games/DS/Lab_6/210041226_T02_L06_2B.cpp","tests":[{"id":1700164279115,"input":"70 90 60 190 80 170 110 20 50 30 130 -1\n1\n2\n1\n3 45\n4 4 65\n2\n5 1 170\n3 47\n8","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/mnt/Games/DS/Lab_6/210041226_T02_L06_2B.cpp","group":"local","local":true}

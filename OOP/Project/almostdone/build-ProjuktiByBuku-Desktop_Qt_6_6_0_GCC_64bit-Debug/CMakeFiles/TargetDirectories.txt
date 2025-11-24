@@ -1,0 +1,9 @@
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/ProjuktiByBuku.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/edit_cache.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/rebuild_cache.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/list_install_components.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/install.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/install/local.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/install/strip.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/ProjuktiByBuku_autogen_timestamp_deps.dir
+/mnt/Games/OOP/Project/almostdone/build-ProjuktiByBuku-Desktop_Qt_6_6_0_GCC_64bit-Debug/CMakeFiles/ProjuktiByBuku_autogen.dir

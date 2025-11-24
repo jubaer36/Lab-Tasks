@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>pomodoro</class>
+ <widget class="QDialog" name="pomodoro">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>451</width>
+    <height>337</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+
+ background: rgb(16, 16, 16); 
+}
+</string>
+  </property>
+  <widget class="QLCDNumber" name="lcdNumber">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>100</y>
+     <width>261</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>10</pointsize>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLCDNumber{
+	color:white;
+	border: 1px solid black;
+	font: 10pt &quot;Arial&quot;;;
+	
+}</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="start_stop_button">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>240</y>
+     <width>121</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>START</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="customize_button">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>0</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>CUSTOMIZE</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="skip_button">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>30</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>SKIP</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="session_no">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>60</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+}
+
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>#1</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="lofi_button">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+ color:white;
+ 
+background: rgb(16, 16, 16) ; 
+
+border: 1px solid green;
+}
+
+QPushButton:hover {
+	color:white;
+     background-color: green;
+    
+}
+
+</string>
+   </property>
+   <property name="text">
+    <string>lofi ON</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
