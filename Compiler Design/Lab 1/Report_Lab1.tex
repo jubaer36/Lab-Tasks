@@ -1,0 +1,231 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Report 1\\Lexical Analysis Implementation}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The objective of this lab is to implement a Lexical Analyzer (Scanner) that reads a source program and identifies valid tokens such as keywords, identifiers, numbers, operators, and delimiters.
+
+\section{Token Definitions}
+The following categories of tokens are defined in the lexical analyzer:
+
+\begin{itemize}
+    \item \textbf{Keywords:} Reserved words used by the language syntax. 
+    \\ \texttt{int, float, if, else, while, for, return, var}
+    
+    \item \textbf{Identifiers:} Names for variables, functions, etc. Defined by the regex:
+    \\ \texttt{[a-zA-Z\_][a-zA-Z0-9\_]*}
+    
+    \item \textbf{Numbers:} 
+    \begin{itemize}
+        \item \textbf{Integers:} \texttt{[0-9]+}
+        \item \textbf{Floats:} \texttt{[0-9]+\textbackslash.[0-9]+}
+    \end{itemize}
+    
+    \item \textbf{Operators:} Mathematical and logical symbols.
+    \\ \texttt{+, -, *, /, =, ==, !=, <, >, <=, >=}
+    
+    \item \textbf{Delimiters:} Punctuation marks used for structural grouping.
+    \\ \texttt{(, ), \{, \}, ;, ,}
+    
+    \item \textbf{Whitespaces:} Characters like spaces, tabs, and newlines are used as separators but are not treated as tokens.
+\end{itemize}
+
+\section{Solution Approach}
+The lexical analyzer follows a character-by-character scanning approach:
+\begin{enumerate}
+    \item \textbf{File Reading:} The input file is opened and read one character at a time.
+    \item \textbf{Lexeme Formation:} Characters are accumulated into a buffer (lexeme) until a breakpoint (delimiter, operator, or whitespace) is encountered.
+    \item \textbf{Look-ahead Logic:} For multi-character operators (e.g., \texttt{==} vs \texttt{=}), the scanner performs a look-ahead to check if the next character forms a valid combined operator.
+    \item \textbf{Token Categorization:} 
+    \begin{itemize}
+        \item Keywords are checked against a predefined list.
+        \item Identifiers and numbers are validated using Regular Expressions (Regex).
+        \item Operators and delimiters are matched directly against predefined sets.
+    \end{itemize}
+    \item \textbf{Error Handling:} Any sequence of characters that does not match the predefined patterns is categorized as an \texttt{INVALID} token.
+\end{enumerate}
+
+\section{Implementation}
+The implementation is done in Python. The source code is provided below:
+
+\begin{lstlisting}[language=Python, caption=Lexical Analyzer Source Code]
+import re
+
+keywords = ["int", "float", "if", "else", "while", "for", "return", "var"]
+whitespace = [" ", "\n", "\t"]
+delimiters = ["(", ")", "{", "}", ";", ","]
+operators = ["+", "-", "*", "/", "=", "==", "!=", "<", ">", "<=", ">="]
+
+identifier_pattern = r"[a-zA-Z_][a-zA-Z0-9_]*"
+integer_pattern = r"[0-9]+"
+float_pattern = r"[0-9]+\.[0-9]+"
+
+def is_keyword(token):
+    return token in keywords
+
+def is_delimiter(token):
+    return token in delimiters
+
+def is_operator(token):
+    return token in operators
+
+def is_identifier(token):
+    return re.fullmatch(identifier_pattern, token) is not None
+
+def is_integer(token):
+    return re.fullmatch(integer_pattern, token) is not None
+
+def is_float(token):
+    return re.fullmatch(float_pattern, token) is not None
+
+def print_token(token_type, lexeme):
+    print(f"<{token_type}, {lexeme}>")
+
+def identify_token(lexeme):
+    if is_keyword(lexeme):
+        print_token("KEYWORD", lexeme)
+    elif is_float(lexeme):
+        print_token("NUMBER", lexeme)
+    elif is_integer(lexeme):
+        print_token("NUMBER", lexeme)
+    elif is_identifier(lexeme):
+        print_token("IDENTIFIER", lexeme)
+    else:
+        print_token("INVALID", lexeme)
+
+def lexical_analyzer(filename):
+    lexeme = ""
+    pending_char = ""
+
+    with open(filename, "r") as file:
+        while True:
+            if pending_char != "":
+                char = pending_char
+                pending_char = ""
+            else:
+                char = file.read(1)
+
+            if char == "":
+                if lexeme != "":
+                    identify_token(lexeme)
+                break
+
+            if char in whitespace:
+                if lexeme != "":
+                    identify_token(lexeme)
+                    lexeme = ""
+                continue
+
+            if char in delimiters:
+                if lexeme != "":
+                    identify_token(lexeme)
+                    lexeme = ""
+                print_token("DELIMITER", char)
+                continue
+
+            if char in operators:
+                if lexeme != "":
+                    identify_token(lexeme)
+                    lexeme = ""
+
+                next_char = file.read(1)
+                possible_operator = char + next_char
+
+                if possible_operator in operators:
+                    print_token("OPERATOR", possible_operator)
+                else:
+                    if char in operators:
+                        print_token("OPERATOR", char)
+                    else:
+                        print_token("INVALID", char)
+                    pending_char = next_char
+                continue
+
+            if char.isalnum() or char == "_" or char == ".":
+                lexeme += char
+                continue
+
+            if lexeme != "":
+                identify_token(lexeme)
+                lexeme = ""
+
+            print_token("INVALID", char)
+
+if __name__ == "__main__":
+    lexical_analyzer("input.txt")
+\end{lstlisting}
+
+\section{Sample Input and Output}
+
+\subsection{Input (\texttt{input.txt})}
+\begin{lstlisting}
+int a = 10
+float b = a + 10
+var x = (b / 3)
+\end{lstlisting}
+
+\subsection{Output Log}
+\begin{lstlisting}
+<KEYWORD, int>
+<IDENTIFIER, a>
+<OPERATOR, =>
+<NUMBER, 10>
+<KEYWORD, float>
+<IDENTIFIER, b>
+<OPERATOR, =>
+<IDENTIFIER, a>
+<OPERATOR, +>
+<NUMBER, 10>
+<KEYWORD, var>
+<IDENTIFIER, x>
+<OPERATOR, =>
+<DELIMITER, (>
+<IDENTIFIER, b>
+<OPERATOR, />
+<NUMBER, 3>
+<DELIMITER, )>
+\end{lstlisting}
+
+\section{Conclusion}
+The lexical analyzer successfully correctly identifies and tokenizes the given input program according to the specified rules. It handles keywords, identifiers, numbers (both integer and float), operators (including multi-character ones), and delimiters while effectively ignoring whitespaces.
+
+\end{document}
