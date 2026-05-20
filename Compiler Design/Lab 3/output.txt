@@ -1,0 +1,10 @@
+Enter Expression:
+Result = 6
+Result = 9
+Result = 14
+Result = 4
+Result = 8
+Result = 64
+Result = 8.5
+Result = -2
+Result = 15

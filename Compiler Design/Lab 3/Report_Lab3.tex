@@ -1,0 +1,191 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Report 3\\YACC-Based Arithmetic Expression Syntax Analyzer}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Objective}
+Design and implement a YACC-based syntax analyzer for arithmetic expressions. The parser recognizes and evaluates expressions supporting addition, subtraction, multiplication, division, exponentiation, and parentheses, while detecting syntax errors.
+
+\section{Expression Grammar}
+The grammar encodes operator precedence structurally — lower-precedence operators sit higher in the hierarchy. Exponentiation binds tighter than multiplication/division, which bind tighter than addition/subtraction. Parentheses and unary minus are handled at the \texttt{primary} level.
+
+\begin{align*}
+\text{expr}    &\rightarrow \text{expr} + \text{term} \mid \text{expr} - \text{term} \mid \text{term} \\
+\text{term}    &\rightarrow \text{term} * \text{factor} \mid \text{term} / \text{factor} \mid \text{factor} \\
+\text{factor}  &\rightarrow \text{factor} \mathbin{\hat{}} \text{primary} \mid \text{primary} \\
+\text{primary} &\rightarrow \texttt{(}\;\text{expr}\;\texttt{)} \mid \texttt{-}\;\text{primary} \mid \text{NUMBER}
+\end{align*}
+
+\section{Implementation}
+
+\subsection{FLEX Lexer}
+
+\begin{lstlisting}[language=C, caption=FLEX Lexer]
+%{
+#include "y.tab.h"
+#include <stdlib.h>
+%}
+
+%%
+
+[0-9]+(\.[0-9]+)?   {
+                        yylval.dval = atof(yytext);
+                        return NUMBER;
+                    }
+
+[ \t]               ;
+\n                  return '\n';
+"+"                 return '+';
+"-"                 return '-';
+"*"                 return '*';
+"/"                 return '/';
+"^"                 return '^';
+"("                 return '(';
+")"                 return ')';
+.                   return yytext[0];
+
+%%
+
+int yywrap() { return 1; }
+\end{lstlisting}
+
+\subsection{YACC Parser}
+
+\begin{lstlisting}[language=C, caption=YACC Parser]
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+void yyerror(const char *s);
+int yylex();
+%}
+
+%union { double dval; }
+
+%token <dval> NUMBER
+%type  <dval> expr term factor primary
+
+%%
+
+input: input line | ;
+
+line:
+      '\n'
+    | expr '\n'  { printf("Result = %g\n", $1); }
+    ;
+
+expr:
+      expr '+' term  { $$ = $1 + $3; }
+    | expr '-' term  { $$ = $1 - $3; }
+    | term           { $$ = $1; }
+    ;
+
+term:
+      term '*' factor  { $$ = $1 * $3; }
+    | term '/' factor  { if ($3 == 0) { yyerror("Division by zero"); $$ = 0; }
+                         else $$ = $1 / $3; }
+    | factor           { $$ = $1; }
+    ;
+
+factor:
+      factor '^' primary  { $$ = pow($1, $3); }
+    | primary             { $$ = $1; }
+    ;
+
+primary:
+      '(' expr ')'  { $$ = $2; }
+    | '-' primary   { $$ = -$2; }
+    | NUMBER        { $$ = $1; }
+    ;
+
+%%
+
+void yyerror(const char *s) { printf("Syntax Error\n"); }
+
+int main()
+{
+    printf("Enter Expression:\n");
+    yyparse();
+    return 0;
+}
+\end{lstlisting}
+
+\section{Compilation Steps}
+
+\begin{lstlisting}[language=bash, caption=Build and Run]
+yacc -d 210041226_2B_Lab03.y
+flex 210041226_2B_Lab03.l
+gcc lex.yy.c y.tab.c -o parser -lm
+./parser < input.txt
+\end{lstlisting}
+
+\section{Sample Input and Output}
+
+\subsection{Input (\texttt{input.txt})}
+\begin{lstlisting}
+5+3-2
+(10-3)+2
+3*4+2
+10/2-1
+2^3
+2^3^2
+3.5*2+1.5
+-5+3
+(2+3)*(4-1)
+\end{lstlisting}
+
+\subsection{Output (\texttt{output.txt})}
+\begin{lstlisting}
+Enter Expression:
+Result = 6
+Result = 9
+Result = 14
+Result = 4
+Result = 8
+Result = 64
+Result = 8.5
+Result = -2
+Result = 15
+\end{lstlisting}
+
+\section{Conclusion}
+The YACC-based parser successfully evaluates arithmetic expressions with correct operator precedence. FLEX handles tokenization and passes tokens to YACC, which applies the grammar rules to compute results. Floating-point support and unary minus were implemented as extensions to the base grammar.
+
+\end{document}
