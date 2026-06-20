@@ -1,0 +1,265 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Report 2\\Lexical Analysis using Lex/Flex}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+The objective of this lab is to implement a Lexical Analyzer using the Lex (Flex) tool. Lex automates the process of generating a scanner by using regular expressions to match tokens in the source code.
+
+\section{Token Definitions}
+The Lex file defines patterns for the following token categories:
+
+\begin{itemize}
+    \item \textbf{Keywords:} Reserved identifiers used by the scanner and basic C-like syntax.
+          \\ \texttt{include, int, float, if, else, print, while, for, return, main, etc.}
+
+    \item \textbf{Constants:}
+          \begin{itemize}
+              \item \textbf{Integers:} Sequences of digits (\texttt{[0-9]+}).
+              \item \textbf{Floats:} Digit sequences with a decimal point (\texttt{[0-9]+\textbackslash.[0-9]+}).
+              \item \textbf{Characters:} Single characters enclosed in single quotes.
+              \item \textbf{Strings:} Byte sequences enclosed in double quotes.
+          \end{itemize}
+
+    \item \textbf{Identifiers:} Names starting with a letter or underscore, followed by alphanumeric characters.
+          \\ \texttt{[A-Za-z\_][A-Za-z0-9\_]*}
+
+    \item \textbf{Operators:}
+          \begin{itemize}
+              \item \textbf{Arithmetic:} \texttt{+, -, *, /, =}
+              \item \textbf{Increment/Decrement:} \texttt{++, --}
+              \item \textbf{Relational:} \texttt{==, !=, <, >, <=, >=}
+              \item \textbf{Logical:} \texttt{\&\&, ||}
+              \item \textbf{Bitwise:} \texttt{\&, |, \^{}, \textasciitilde, <<, >>}
+          \end{itemize}
+
+    \item \textbf{Delimiters:} Brackets, braces, parentheses, and punctuation.
+          \\ \texttt{(, ), \{, \}, [, ], ;, ,, \%, \%\%}
+\end{itemize}
+
+\section{Solution Approach}
+The lexical analyzer is implemented using Lex specifications:
+\begin{enumerate}
+    \item \textbf{Definitions Section (\%\{\dots\%\}):} Header files are included, and global variables are declared to maintain counts of different token types (total tokens, keywords, operators, etc.).
+    \item \textbf{Patterns Section:} Regular expressions are defined for digits, letters, identifiers, and various constant types.
+    \item \textbf{Rules Section (\%\%\dots\%\%):} Each pattern is associated with a C action. When a pattern matches the input text (\texttt{yytext}), the corresponding action prints the token type and lexeme to the output file and increments the relevant counter.
+    \item \textbf{Main Function:} The program opens an input file (\texttt{input.txt}) and an output file (\texttt{output.txt}). It calls \texttt{yylex()} to begin the scanning process. Finally, it prints a summary of token counts to the output file.
+\end{enumerate}
+
+\section{Implementation}
+The Lex source code (\texttt{210041226\_2B\_Lab02.l}) is provided below:
+
+\begin{lstlisting}[language=C, caption=Lex Specification for Lexical Analyzer]
+%{
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    FILE *yyin, *yyout;
+    
+    int total = 0;
+    int keywords = 0;
+    int identifiers = 0;
+    int int_constants = 0;
+    int float_constants = 0;
+    int char_constants = 0;
+    int string_constants = 0;
+    int arithmetic_operators = 0;
+    int increment_decrement_operators = 0;
+    int relational_operators = 0;
+    int logical_operators = 0;
+    int bitwise_operators = 0;
+    int operators = 0;
+    int delimiters = 0;
+%}
+
+DIGIT       [0-9]
+LETTER      [A-Za-z_]
+ID          {LETTER}({LETTER}|{DIGIT})*
+INT         {DIGIT}+
+FLOAT       {DIGIT}+"."{DIGIT}+
+CHAR        \'[^\']\'
+STRING      \"[^\",%:=]*\"
+
+%%
+"include"|"int"|"float"|"if"|"else"|"print"|"while"|"for"|"return"|"main"|"yyin"|"yyout"|"yylex"|"fopen"|"fclose"|"fprintf" {
+    fprintf(yyout, "<KEYWORD, %s>\n", yytext);
+    keywords++;
+    total++;
+}
+
+{FLOAT} {
+    fprintf(yyout, "<FLOAT_CONSTANT, %s>\n", yytext);
+    float_constants++;
+    total++;
+}
+{INT} {
+    fprintf(yyout, "<INTEGER_CONSTANT, %s>\n", yytext);
+    int_constants++;
+    total++;
+}
+{CHAR} {
+    fprintf(yyout, "<CHARACTER_CONSTANT, %s>\n", yytext);
+    char_constants++;
+    total++;
+}
+{STRING} {
+    fprintf(yyout, "<STRING_CONSTANT, %s>\n", yytext);
+    string_constants++;
+    total++;
+}
+{ID} {
+    fprintf(yyout, "<IDENTIFIER, %s>\n", yytext);
+    identifiers++;
+    total++;
+
+}
+"++"|"--" {
+    fprintf(yyout, "<INCREMENT_DECREMENT_OPERATOR, %s>\n", yytext);
+    increment_decrement_operators++;
+    operators++;
+    total++;
+}
+"+"|"-"|"*"|"/"|"=" {
+    fprintf(yyout, "<ARITHMETIC_OPERATOR, %s>\n", yytext);
+    arithmetic_operators++;
+    operators++;
+    total++;
+}
+
+"=="|"!="|"<="|">="|"<"|">" {
+    fprintf(yyout, "<RELATIONAL_OPERATOR, %s>\n", yytext);
+    relational_operators++;
+    operators++;
+    total++;
+}
+"&&"|"||" {
+    fprintf(yyout, "<LOGICAL_OPERATOR, %s>\n", yytext);
+    logical_operators++;
+    operators++;
+    total++;
+}
+"&"|"|"|"^"|"~"|"<<"|">>" {
+    fprintf(yyout, "<BITWISE_OPERATOR, %s>\n", yytext);
+    bitwise_operators++;
+    operators++;
+    total++;
+}
+"("|")"|"{"|"}"|"["|"]"|";"|","|"%"|"%%" {
+    fprintf(yyout, "<DELIMITER, %s>\n", yytext);
+    delimiters++;
+    total++;
+}
+
+[ \t\n]+ {
+}
+
+%%
+int main(){
+    yyin = fopen("input.txt", "r");
+    yyout = fopen("output.txt", "w");
+
+    yylex();
+
+    fprintf(yyout, "\nTotal Tokens: %d\n", total);
+    fprintf(yyout, "Keywords: %d\n", keywords);
+    fprintf(yyout, "Identifiers: %d\n", identifiers);
+    fprintf(yyout, "Integer Constants: %d\n", int_constants);
+    fprintf(yyout, "Float Constants: %d\n", float_constants);
+    fprintf(yyout, "Character Constants: %d\n", char_constants);
+    fprintf(yyout, "String Constants: %d\n", string_constants);
+    fprintf(yyout, "Arithmetic Operators: %d\n", arithmetic_operators);
+    fprintf(yyout, "Increment/Decrement Operators: %d\n", increment_decrement_operators);
+    fprintf(yyout, "Relational Operators: %d\n", relational_operators);
+    fprintf(yyout, "Logical Operators: %d\n", logical_operators);
+    fprintf(yyout, "Bitwise Operators: %d\n", bitwise_operators);
+    fprintf(yyout, "Delimiters: %d\n", delimiters);
+
+    fclose(yyin);
+    fclose(yyout);
+
+    return 0;
+}
+\end{lstlisting}
+
+\section{Sample Input and Output}
+
+\subsection{Input (\texttt{input.txt})}
+The scanner was tested on its own source code as input.
+
+\subsection{Output Summary (\texttt{output.txt})}
+\begin{lstlisting}
+Total Tokens: 749
+Keywords: 80
+Identifiers: 182
+Integer Constants: 17
+Float Constants: 0
+Character Constants: 0
+String Constants: 48
+Arithmetic Operators: 29
+Increment/Decrement Operators: 29
+Relational Operators: 34
+Logical Operators: 0
+Bitwise Operators: 35
+Delimiters: 295
+\end{lstlisting}
+
+\subsection{Output Log (Snippet)}
+\begin{lstlisting}
+<DELIMITER, %>
+<DELIMITER, {>
+#<KEYWORD, include>
+<RELATIONAL_OPERATOR, <>
+<IDENTIFIER, stdio>
+.<IDENTIFIER, h>
+<RELATIONAL_OPERATOR, >>
+#<KEYWORD, include>
+...
+<KEYWORD, int>
+<IDENTIFIER, total>
+<ARITHMETIC_OPERATOR, =>
+<INTEGER_CONSTANT, 0>
+<DELIMITER, ;>
+\end{lstlisting}
+
+\section{Conclusion}
+The lexical analyzer implemented using Lex successfully identifies and counts various token categories. This approach is highly efficient as it leverages regular expressions and automated code generation, reducing the manual effort required in scanner development.
+
+\end{document}
