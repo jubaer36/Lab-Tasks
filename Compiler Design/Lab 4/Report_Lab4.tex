@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Report 4\\YACC-Based Arithmetic Expression Syntax Analyzer\\with Symbol Table Management}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Objective}
+Extend the YACC-based arithmetic expression parser from Lab 3 with variable support and a dynamic symbol table. The system recognizes INTEGER, DOUBLE, and IDENTIFIER tokens, handles assignment statements, and persists variable state across executions using a linked list symbol table saved to a file.
+
+\section{Expression Grammar}
+The grammar extends the base arithmetic grammar with assignment statements, identifier lookup, and mathematical function support. Operator precedence is encoded structurally — function application and exponentiation bind tightest, followed by multiplication/division, then addition/subtraction.
+
+\begin{align*}
+\text{statement} &\rightarrow \text{ID} = \text{expr} \mid \text{expr} \\
+\text{expr}    &\rightarrow \text{expr} + \text{term} \mid \text{expr} - \text{term} \mid \text{term} \\
+\text{term}    &\rightarrow \text{term} * \text{power} \mid \text{term} / \text{power} \mid \text{power} \\
+\text{power}   &\rightarrow \text{factor} \mathbin{\hat{}} \text{power} \mid \text{factor} \\
+\text{factor}  &\rightarrow \sin(\text{expr}) \mid \cos(\text{expr}) \mid \tan(\text{expr}) \mid \sqrt(\text{expr}) \mid \log(\text{expr}) \\
+               &\quad\mid \texttt{(}\;\text{expr}\;\texttt{)} \mid \text{INTEGER} \mid \text{DOUBLE} \mid \text{ID}
+\end{align*}
+
+\section{Background Theory}
+A syntax analyzer (parser) verifies whether a sequence of tokens follows grammatical rules. In compiler design, Flex performs lexical analysis by converting input into tokens, and YACC constructs a parser based on grammar rules.
+
+A symbol table is introduced in this lab to store identifiers and their values during execution. It is implemented as a linked list to allow dynamic memory allocation. Each entry stores the variable name, its current value, and its type (INTEGER or DOUBLE). File I/O persists the symbol table between executions via \texttt{symbols.txt}.
+
+\section{Implementation}
+
+\subsection{FLEX Lexer}
+
+\lstinputlisting[language=C, caption=FLEX Lexer (lexer.l)]{lexer.l}
+
+\subsection{YACC Parser}
+
+\lstinputlisting[language=C, caption=YACC Parser (parser.y)]{parser.y}
+
+\section{Compilation Steps}
+
+\begin{lstlisting}[language=bash, caption=Build and Run]
+yacc -d parser.y
+flex lexer.l
+gcc lex.yy.c y.tab.c -o parser -lm
+./parser
+\end{lstlisting}
+
+\section{Sample Input and Output}
+
+\subsection{Input (\texttt{input.txt})}
+\lstinputlisting[caption=Sample Input]{input.txt}
+
+\subsection{Output (\texttt{output.txt})}
+\lstinputlisting[caption=Generated Output]{output.txt}
+
+\subsection{Symbol Table (\texttt{symbols.txt})}
+\lstinputlisting[caption=Symbol Table File]{symbols.txt}
+
+\section{Conclusion}
+The extended YACC-based parser successfully handles arithmetic expression evaluation, assignment statements, and identifier lookup through a dynamic symbol table. Flex tokenizes INTEGER, DOUBLE, and IDENTIFIER values, which YACC processes according to the defined grammar rules. The linked list implementation enables efficient runtime insertion and retrieval of variables, while file I/O ensures symbol table state persists across executions. Undefined variable references are caught and reported as warnings without halting the parser.
+
+\end{document}

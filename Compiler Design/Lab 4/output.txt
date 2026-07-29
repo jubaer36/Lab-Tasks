@@ -1,0 +1,13 @@
+marks1 = 20.5
+marks2 = 10
+bonus = 5
+total = 35.5
+avg = 11.8333
+result1 = 23.6667
+result2 = 33.6667
+finalScore = 1133.44
+a = 100
+b = 150
+c = 75
+Warning: x not defined
+undefinedTest = 5

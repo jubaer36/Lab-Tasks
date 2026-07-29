@@ -1,0 +1,14 @@
+marks1 = 20.5
+marks2 = 10
+bonus = 5
+total = marks1 + marks2 + bonus
+avg = total / 3
+result1 = avg * 2
+result2 = result1 + 10
+finalScore = result2 ^ 2
+
+a = 100
+b = a + 50
+c = b / 2
+
+undefinedTest = x + 5
