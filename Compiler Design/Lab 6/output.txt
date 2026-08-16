@@ -1,0 +1,9 @@
+ADD T1, b, c
+MOV a, T1
+ADD T2, a, b
+MUL T3, T2, c
+MOV x, T3
+MUL T4, a, b
+MUL T5, c, d
+ADD T6, T4, T5
+MOV y, T6

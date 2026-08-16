@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Report 5\\HTML Structure Validator Using LEX and YACC}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Objective}
+Design and implement an HTML Structure Validator using LEX/FLEX and YACC/Bison. The validator analyzes a simplified HTML document, checks that it follows the specified HTML grammar, and reports syntax errors for malformed markup such as mismatched tags, incorrect nesting, or missing sections.
+
+\section{Grammar}
+HTML documents are nested structures, so the grammar is recursive: a \texttt{content} list may contain plain text or any of the supported elements, and elements that permit nested content (headings, paragraphs, \texttt{div}, \texttt{b}, \texttt{i}) recurse back into \texttt{content}. Because each tag has its own dedicated open/close token pair, mismatched or incorrectly nested tags cannot be reduced by any production and are rejected directly by the parser as syntax errors.
+
+\begin{align*}
+\text{document}      &\rightarrow \text{html\_document} \\
+\text{html\_document}&\rightarrow \texttt{<html>}\ \text{head\_section}\ \text{body\_section}\ \texttt{</html>} \\
+\text{head\_section} &\rightarrow \texttt{<head>}\ \text{title\_section}\ \texttt{</head>} \\
+\text{title\_section}&\rightarrow \texttt{<title>}\ \text{TEXT\_CONTENT}\ \texttt{</title>} \\
+\text{body\_section} &\rightarrow \texttt{<body>}\ \text{content}\ \texttt{</body>} \\
+\text{content}       &\rightarrow \text{content}\ \text{content\_item} \mid \varepsilon \\
+\text{content\_item} &\rightarrow \text{TEXT\_CONTENT} \mid \text{heading} \mid \text{paragraph} \mid \text{div} \mid \text{bold} \mid \text{italic} \\
+\text{heading}       &\rightarrow \texttt{<h1>}\ \text{content}\ \texttt{</h1>} \mid \texttt{<h2>}\ \text{content}\ \texttt{</h2>} \\
+\text{paragraph}     &\rightarrow \texttt{<p>}\ \text{content}\ \texttt{</p>} \\
+\text{div}           &\rightarrow \texttt{<div>}\ \text{content}\ \texttt{</div>} \\
+\text{bold}          &\rightarrow \texttt{<b>}\ \text{content}\ \texttt{</b>} \\
+\text{italic}        &\rightarrow \texttt{<i>}\ \text{content}\ \texttt{</i>}
+\end{align*}
+
+\section{Background Theory}
+The FLEX scanner tokenizes each supported opening/closing tag pair into a distinct token (e.g.\ \texttt{<p>} becomes \texttt{P\_OPEN}, \texttt{</p>} becomes \texttt{P\_CLOSE}), and any run of characters up to the next \texttt{<} is returned as a single \texttt{TEXT\_CONTENT} token. The Bison grammar mirrors the nested structure of HTML: because \texttt{content} is left-recursive over \texttt{content\_item}, arbitrarily deep and arbitrarily ordered nesting of headings, paragraphs, \texttt{div}, \texttt{b}, and \texttt{i} elements is accepted, while a closing tag that does not match the innermost open element causes an unavoidable parse error, since the grammar offers no production that could consume it. This makes tag balancing and nesting a purely syntactic property, matching the assignment's requirement that mismatched or incorrectly nested tags be treated as syntax errors rather than semantic errors.
+
+\section{Implementation}
+
+\subsection{FLEX Lexer}
+\lstinputlisting[language=C, caption=FLEX Lexer (validator.l)]{validator.l}
+
+\subsection{YACC Parser}
+\lstinputlisting[language=C, caption=YACC Parser (validator.y)]{validator.y}
+
+\section{Compilation Steps}
+\begin{lstlisting}[language=bash, caption=Build and Run]
+bison -y -d validator.y
+flex validator.l
+gcc lex.yy.c y.tab.c -o validator
+./validator
+\end{lstlisting}
+
+\section{Sample Input and Output}
+
+\subsection{Valid HTML Input (\texttt{input.html})}
+\lstinputlisting[caption=Sample Valid HTML Input]{input.html}
+
+\subsection{Output (\texttt{output.txt})}
+\lstinputlisting[caption=Generated Output]{output.txt}
+
+\subsection{Invalid HTML Examples}
+The parser was also tested against the malformed documents from the assignment brief -- an incorrect closing tag (\texttt{<p>...</div>}), incorrect nesting (\texttt{<b><i>...</b></i>}), and a document missing its \texttt{<body>} section. In every case the parser rejected the input and reported a syntax error rather than proceeding, e.g.:
+\begin{lstlisting}
+Syntax Error: syntax error near line 8 (token: "</div>").
+Syntax Error: syntax error near line 9 (token: "</b>").
+Syntax Error: syntax error near line 5 (token: "</html>").
+\end{lstlisting}
+
+\section{Conclusion}
+The LEX/YACC validator successfully parses simplified HTML documents, enforcing correct document structure, balanced opening and closing tags, and valid nesting of headings, paragraphs, \texttt{div}, bold, and italic elements. Because tag matching and nesting are encoded directly in the grammar, malformed documents are rejected purely through syntax analysis, with the parser reporting the offending token and line number.
+
+\end{document}

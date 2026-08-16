@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Report 6\\Pseudo Assembly Code Generation Using YACC}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Objective}
+Develop a YACC program that generates Pseudo Assembly Code (PAC) for assignment statements and arithmetic expressions, using Syntax-Directed Definitions (SDDs) to drive code generation as the parser reduces each production.
+
+\section{Grammar}
+Operator precedence and associativity are encoded structurally: addition/subtraction sit above multiplication/division/modulo, which sit above parenthesised and atomic factors.
+
+\begin{align*}
+\text{Program}  &\rightarrow \text{StmtList} \\
+\text{StmtList} &\rightarrow \text{StmtList}\ \text{Stmt} \mid \text{Stmt} \\
+\text{Stmt}     &\rightarrow \text{id} = \text{Expr} ; \\
+\text{Expr}     &\rightarrow \text{Expr} + \text{Term} \mid \text{Expr} - \text{Term} \mid \text{Term} \\
+\text{Term}     &\rightarrow \text{Term} * \text{Factor} \mid \text{Term} / \text{Factor} \mid \text{Term} \mathbin{\%} \text{Factor} \mid \text{Factor} \\
+\text{Factor}   &\rightarrow ( \text{Expr} ) \mid \text{id} \mid \text{number}
+\end{align*}
+
+\section{Syntax-Directed Definition}
+Every non-terminal that produces a value (\texttt{Expr}, \texttt{Term}, \texttt{Factor}) carries a synthesized attribute \texttt{place} -- implemented as the YACC semantic value \texttt{\$\$} -- holding the name of the variable, temporary, or literal that stores its computed result.
+
+\begin{itemize}
+    \item \textbf{Expr $\rightarrow$ Expr1 + Term}: \texttt{Expr.place = newTemp()}; emit \texttt{ADD Expr.place, Expr1.place, Term.place}.
+    \item \textbf{Expr $\rightarrow$ Expr1 - Term}: analogous, using \texttt{SUB}.
+    \item \textbf{Term $\rightarrow$ Term1 * Factor}: \texttt{Term.place = newTemp()}; emit \texttt{MUL Term.place, Term1.place, Factor.place} (similarly \texttt{DIV} and \texttt{MOD} for \texttt{/} and \texttt{\%}).
+    \item \textbf{Factor $\rightarrow$ ( Expr )}: \texttt{Factor.place = Expr.place} -- no new temporary is needed.
+    \item \textbf{Factor $\rightarrow$ id \textbar\ number}: \texttt{Factor.place} is the lexeme text itself.
+    \item \textbf{Stmt $\rightarrow$ id = Expr ;}: emit \texttt{MOV id, Expr.place}.
+\end{itemize}
+
+Each rule that introduces a new temporary calls \texttt{newTemp()}, which returns sequentially numbered names \texttt{T1, T2, T3, \ldots}, and \texttt{emit()}, which writes one instruction line to the output file. Because these actions fire bottom-up as YACC reduces each production, the left operand of an operator is always fully evaluated (and assigned its temporary) before the right operand is visited, and the top-level operator last -- which is exactly why the temporary numbering in the sample output below proceeds strictly left-to-right, subexpression by subexpression.
+
+\section{Implementation}
+
+\subsection{FLEX Lexer}
+\lstinputlisting[language=C, caption=FLEX Lexer (lexer.l)]{lexer.l}
+
+\subsection{YACC Parser}
+\lstinputlisting[language=C, caption=YACC Parser (parser.y)]{parser.y}
+
+\section{Compilation Steps}
+\begin{lstlisting}[language=bash, caption=Build and Run]
+bison -y -d parser.y
+flex lexer.l
+gcc lex.yy.c y.tab.c -o pacgen
+./pacgen
+\end{lstlisting}
+
+\section{Sample Input and Output}
+
+\subsection{Input (\texttt{input.txt})}
+\lstinputlisting[caption=Sample Input]{input.txt}
+
+\subsection{Generated Pseudo Assembly Code (\texttt{output.txt})}
+\lstinputlisting[caption=Generated Output]{output.txt}
+
+\section{Conclusion}
+The YACC-based translator successfully converts assignment statements containing arithmetic expressions into Pseudo Assembly Code, preserving operator precedence and associativity through the grammar structure and generating sequentially numbered temporary variables for every intermediate result. The synthesized \texttt{place} attribute, propagated bottom-up through semantic actions, cleanly separates parsing from code emission and produces output identical in structure to the instruction set specified in the lab manual.
+
+\end{document}
