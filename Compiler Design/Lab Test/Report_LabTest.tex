@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{amsmath}
+\geometry{a4paper, margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{Compiler Design Lab Test Report\\}
+\author{Abdullah Al Jubaer Gem\\ID: 210041226\\Section: 2B}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Implementation}
+
+\subsection{FLEX Lexer}
+\lstinputlisting[language=C, caption=FLEX Lexer (lexer.l)]{lexer.l}
+
+\subsection{YACC Parser}
+\lstinputlisting[language=C, caption=YACC Parser (parser.y)]{parser.y}
+
+
+
+\section{Sample Input and Output}
+
+\subsection{Input (\texttt{input.txt})}
+\lstinputlisting[caption=Sample Input]{input.txt}
+
+\subsection{Generated Pseudo Assembly Code (\texttt{output.txt})}
+\lstinputlisting[caption=Generated Output]{output.txt}
+
+
+
+\end{document}

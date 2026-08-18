@@ -1,0 +1,18 @@
+jubaer@machinaLite:/mnt/Others/Lab-Tasks/Compiler Design/Lab Test$ ./config config.ini
+=== Parsing entries ===
+  host         = localhost          (STRING)
+  port         = 3306               (INTEGER)
+  username     = admin              (STRING)
+  host         = 192.168.1.10       (STRING)
+
+=== Symbol table ===
+[Database]  (line 1, 3 keys)
+    host         = localhost          STRING
+    port         = 3306               INTEGER
+    username     = admin              STRING
+[Server]  (line 6, 1 keys)
+    host         = 192.168.1.10       STRING
+
+=== Result ===
+Valid configuration file: 2 section(s), no errors.
+jubaer@machinaLite:/mnt/Others/Lab-Tasks/Compiler De
